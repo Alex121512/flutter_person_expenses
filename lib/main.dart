@@ -66,11 +66,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   List<Transaction> get _recentTransactions {
-    /*List<Transaction> iterTransactions = [];
+    /*List<Transaction> iterationTransactions = [];
 
     for(int i = 0; i < _userTransactions.length; i++) {
       if(_userTransactions[i].date.isAfter(DateTime.now().subtract(const Duration(days: 7)))) {
-        iterTransactions.add(_userTransactions[i]);
+        iterationTransactions.add(_userTransactions[i]);
       }
     }*/
 
