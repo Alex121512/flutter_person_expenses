@@ -1,17 +1,39 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
 
-class TransactionItem extends StatelessWidget {
+class TransactionItem extends StatefulWidget {
   const TransactionItem({
-    super.key,
+    Key? key,
     required this.transaction,
     required this.delTxCallBack,
-  });
+  }) : super(key: key);
 
   final Transaction transaction;
   final Function delTxCallBack;
+
+  @override
+  State<TransactionItem> createState() => _TransactionItemState();
+}
+
+class _TransactionItemState extends State<TransactionItem> {
+  Color? _bgColor;
+
+  @override
+  void initState() {
+    const availableColors = [
+      Colors.purple,
+      Colors.indigo,
+      Colors.indigoAccent,
+      Colors.amber,
+    ];
+
+    _bgColor = availableColors[Random().nextInt(4)];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,43 +45,56 @@ class TransactionItem extends StatelessWidget {
       elevation: 5,
       child: ListTile(
         leading: CircleAvatar(
+          backgroundColor: _bgColor,
           radius: 30,
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: FittedBox(
               child: Text(
-                '\$${transaction.amount.toStringAsFixed(2)}',
+                '\$${widget.transaction.amount.toStringAsFixed(2)}',
               ),
             ),
           ),
         ),
         title: Text(
-          transaction.title,
-          style: Theme.of(context).textTheme.titleLarge,
+          widget.transaction.title,
+          style: Theme
+              .of(context)
+              .textTheme
+              .titleLarge,
         ),
         subtitle: Text(
-          DateFormat.yMMMd().format(transaction.date),
+          DateFormat.yMMMd().format(widget.transaction.date),
         ),
-        trailing: MediaQuery.of(context).size.width > 460
+        trailing: MediaQuery
+            .of(context)
+            .size
+            .width > 460
             ? TextButton.icon(
           onPressed: () =>
-              delTxCallBack(transaction.id),
+              widget.delTxCallBack(widget.transaction.id),
           icon: const Icon(
             Icons.delete,
           ),
           label: const Text('Delete'),
           style: TextButton.styleFrom(
             foregroundColor:
-            Theme.of(context).colorScheme.error,
+            Theme
+                .of(context)
+                .colorScheme
+                .error,
           ),
         )
             : IconButton(
           icon: const Icon(
             Icons.delete,
           ),
-          color: Theme.of(context).colorScheme.error,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .error,
           onPressed: () =>
-              delTxCallBack(transaction.id),
+              widget.delTxCallBack(widget.transaction.id),
         ),
       ),
     );
